@@ -14,7 +14,7 @@ use crossterm::{
     style::{Print, ResetColor, Stylize},
     terminal::{disable_raw_mode, enable_raw_mode, Clear, ClearType},
 };
-use sudoku::{GameData, GameLevel, SudokuGame};
+use sudoku::{GameData, SudokuGame};
 
 use crate::{
     board::{draw_board, CELL_WIDTH, START_POINT, SUDOKO_CHAR_LENGTH},
@@ -60,7 +60,7 @@ fn main() -> io::Result<()> {
     execute!(w, Clear(ClearType::All), MoveTo(0, 0), DisableMouseCapture)?;
     println!("{}\n", draw_board());
 
-    let mut sudoku = SudokuGame::new(GameLevel::Easy);
+    let mut sudoku = SudokuGame::new();
     let mut solved_game = sudoku.clone_base_game();
     SudokuGame::solve_with_data(&mut solved_game);
     let mut address = 0;
@@ -101,7 +101,16 @@ fn main() -> io::Result<()> {
             }
 
             KeyCode::Char('?') => {
-                add_info_bellow_table(format!("you can add {} numbers", 1), InfoStatus::Help);
+                let possible_values = SudokuGame::possible_values(&sudoku.game_data, address);
+                let possible_values_string = possible_values
+                    .into_iter()
+                    .map(|c| c.to_string())
+                    .collect::<Vec<String>>()
+                    .join(".");
+                add_info_bellow_table(
+                    format!("you can add {} numbers", possible_values_string),
+                    InfoStatus::Help,
+                );
             }
 
             KeyCode::Char('c') => {

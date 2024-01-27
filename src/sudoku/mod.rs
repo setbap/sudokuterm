@@ -1,13 +1,8 @@
 use std::{u16, usize};
 
-pub type GameData = [u16; 81];
+use rand::{seq::SliceRandom, Rng};
 
-#[derive(Debug)]
-pub enum GameLevel {
-    Easy,
-    Normal,
-    Hard,
-}
+pub type GameData = [u16; 81];
 
 const game_data: GameData = [
     0, 0, 7, 4, 1, 9, 0, 0, 0, 6, 0, 9, 2, 5, 0, 1, 0, 0, 1, 4, 5, 3, 7, 0, 8, 0, 0, 0, 6, 3, 8, 4,
@@ -19,15 +14,13 @@ const game_data: GameData = [
 pub struct SudokuGame {
     pub base_data: GameData,
     pub game_data: GameData,
-    level: GameLevel,
 }
 
 impl SudokuGame {
-    pub fn new(level: GameLevel) -> SudokuGame {
+    pub fn new() -> SudokuGame {
         SudokuGame {
             base_data: game_data,
             game_data: game_data.clone(),
-            level,
         }
     }
 
@@ -112,6 +105,17 @@ impl SudokuGame {
         return true;
     }
 
+    pub fn possible_values(data: &GameData, position: u16) -> Vec<u16> {
+        let mut values: Vec<u16> = Vec::new();
+        for i in 0..9 {
+            if Self::_is_valid(data, position, i) {
+                values.push(i);
+            }
+        }
+
+        values
+    }
+
     pub fn invalid_cells(&self, data: &GameData) -> Vec<usize> {
         let mut wrong_cells: Vec<usize> = Vec::new();
         for i in 0..81 {
@@ -154,16 +158,5 @@ impl SudokuGame {
         }
 
         return true;
-    }
-
-    fn possible_values(data: &GameData, position: u16) -> Vec<u16> {
-        let mut values: Vec<u16> = Vec::new();
-        for i in 0..9 {
-            if Self::_is_valid(data, position, i) {
-                values.push(i);
-            }
-        }
-
-        values
     }
 }

@@ -7,9 +7,13 @@ const TOP_AND_MIDDLE_DOUBLE_JOINT: char = '╦';
 const BOTTOM_LEFT: char = '╚';
 const BOTTOM_RIGHT: char = '╝';
 const MIDDLE_DOUBLE_JOINT: char = '╫';
+const MIDDLE_TOP_DOUBLE_JOINT: char = '╪';
+const MIDDLE_ALL_DOUBLE_JOINT: char = '╬';
 const MIDDLE_SINGLE_JOINT: char = '┼';
 const LEFT_MIDDLE_JOINT: char = '╟';
+const LEFT_DOUBLE_MIDDLE_JOINT: char = '╠';
 const RIGHT_MIDDLE_JOINT: char = '╢';
+const RIGHT_DOUBLE_MIDDLE_JOINT: char = '╣';
 const BOTTOM_DOUBLE_JOINT: char = '╧';
 const BOTTOM_AND_MIDDLE_DOUBLE_JOINT: char = '╩';
 const DOUBLE_H_LINE: char = '═';
@@ -89,11 +93,11 @@ fn draw_middle_with_double_joint() -> String {
     let mut line: Vec<char> = vec![];
     for i in 0..=SUDOKO_CHAR_LENGTH {
         match i {
-            0 => line.push(LEFT_MIDDLE_JOINT),
-            SUDOKO_CHAR_LENGTH => line.push(RIGHT_MIDDLE_JOINT),
-            n if n % CELL_WIDTH == 0 && n % 3 == 0 => line.push(MIDDLE_DOUBLE_JOINT),
-            n if n % CELL_WIDTH == 0 => line.push(MIDDLE_SINGLE_JOINT),
-            _ => line.push(H_LINE),
+            0 => line.push(LEFT_DOUBLE_MIDDLE_JOINT),
+            SUDOKO_CHAR_LENGTH => line.push(RIGHT_DOUBLE_MIDDLE_JOINT),
+            n if n % CELL_WIDTH == 0 && n % 3 == 0 => line.push(MIDDLE_ALL_DOUBLE_JOINT),
+            n if n % CELL_WIDTH == 0 => line.push(MIDDLE_TOP_DOUBLE_JOINT),
+            _ => line.push(DOUBLE_H_LINE),
         }
     }
 
